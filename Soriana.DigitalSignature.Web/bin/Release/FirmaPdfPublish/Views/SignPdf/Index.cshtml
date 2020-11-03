@@ -1,0 +1,92 @@
+﻿@model Soriana.DigitalSignature.Web.Models.SingPdfModel
+@{
+    /**/
+
+    /**/
+    ViewBag.Title = "Firmar PDF";
+}
+<style>
+    p {
+        font-weight: bold;
+    }
+</style>
+<link href="~/Content/RadioButtons/CheckboxRadiosStyles.css" rel="stylesheet" />
+<h2>PDF Digital Signature</h2>
+<hr />
+@using (Html.BeginForm("SignPdf", "SignPdf", FormMethod.Post,
+    new { enctype = "multipart/form-data", id = "uploadFilesForm" }))
+{
+    <div class="row">
+        <div class="col-md-4">
+            <p>PDF:</p>
+            <div class="custom-file mb-3">
+                <input type="file" class="custom-file-input" id="pdfFile" name="pdfFile" accept=".pdf">
+                <label class="custom-file-label" for="pdfFile">Archivo PDF</label>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <p>Certificado:</p>
+            <div class="custom-file mb-3">
+                <input type="file" class="custom-file-input" id="certFile" name="certFile" accept=".pfx,.p12">
+                <label class="custom-file-label" for="certFile">Certificado</label>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <p>Password: <p />
+            <div class="form-group">
+                <input type="password" class="form-control" id="certPassword" placeholder="Password" name="certPassword">
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-4">
+            <p>Firma:</p>
+            <div class="custom-file mb-3">
+                <input type="file" class="custom-file-input" id="signImage" name="signImage" accept="image/*">
+                <label class="custom-file-label" for="signImage">Imagén Firma</label>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <p>Opciones Firma</p>
+            <div class="form-check form-check-inline">
+                <input id="signVisible" name="signVisible" class="form-check-input" type="checkbox" data-toggle="toggle" data-size="sm" data-style="mr-1" checked value="1">
+                <label for="signVisible" class="form-check-label">Mostrar Firma</label>
+            </div>
+            <div class="form-check form-check-inline">
+                <input id="signatrueRenderType" name="signatrueRenderType" class="form-check-input" type="checkbox" data-toggle="toggle" data-size="sm" data-style="mr-1" value="1">
+                <label for="signatrueRenderType" class="form-check-label">Info. Certificado</label>
+            </div>
+        </div>
+        <div class="col-md-4" id="signPosition">
+            <p>Ubicación Firma:</p>
+            <select class="form-control" id="signLocation" name="signLocation">
+                <option value=""> -- Seleccione --</option>
+                <option value="CN">Al centro Abajo</option>
+                <option value="TL">Superior Izquierda</option>
+                <option value="TR">Superior Derecha</option>
+                <option value="BL">Inferior Izquierda</option>
+                <option value="BR">Inferior Derecha</option>
+            </select>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-2">
+            <p></p>
+            <button type="button" class="btn btn-success btn-block" id="uploadBtn" onclick="SignPdf()">
+                Firmar PDF
+                <span class="glyphicon glyphicon-save-file"></span>
+            </button>
+        </div>
+    </div>
+
+}
+
+@section scripts
+{
+    <link href="~/Content/bootstrap4-toggle.min.css" rel="stylesheet" />
+    <script src="~/Scripts/bootstrap4-toggle.min.js"></script>
+    <script src="~/Scripts/SignPdf/SignPdf.js"></script>
+    <script>
+        var downloadUrl = "@Url.Action("DownloadSignedPdf", "SignPdf")";
+    </script>
+}

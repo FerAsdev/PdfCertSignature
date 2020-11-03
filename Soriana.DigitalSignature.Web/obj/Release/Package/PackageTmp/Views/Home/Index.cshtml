@@ -1,0 +1,25 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+}
+<div class="row wrapper border-bottom white-bg page-heading">
+    <div class="col-lg-9">
+        <h2>Home</h2>
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item">
+                <a href="@Url.Action("Index", "Home")">Home</a>
+            </li>
+        </ol>
+    </div>
+</div>
+<br />
+<div class="border-bottom white-bg">
+    <div class="">
+        <div class="">
+            <div class="ibox-content">
+                <h2>Demo PDF Digial Signature</h2>
+                <hr />
+                <p style="font-size: 1.2em;">Esta aplicacion demo sirve para @Html.ActionLink("Firmar", "index", "SignPdf") un archivo PDF con un certificado y un password.</p>
+            </div>
+        </div>
+    </div>
+</div>

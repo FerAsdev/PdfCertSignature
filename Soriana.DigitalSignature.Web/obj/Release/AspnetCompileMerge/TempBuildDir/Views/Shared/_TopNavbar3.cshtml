@@ -1,0 +1,48 @@
+﻿<div class="row border-bottom white-bg">
+    <nav class="navbar navbar-static-top" role="navigation" style="width:100%">
+        <div class="navbar-header" style="width:100%;">
+            <table id="TitleHeader" style="width:100%;">
+                <tr>
+                    <td style="width:14%;padding-left:7px;padding-TOP:5px;">
+                        <a href="@Url.Action("Index", "Home")"><img src="@Url.Content("~/Content/Images/SORIANA_OFICIAL.png")" style="width:150px;" /></a></td>
+                    <td style="font-size:30px;text-align:center">
+                        |
+                    </td>
+                    <td style="padding-top:7px;padding-left:7px;text-align:left;color:white;font-weight:600">
+                        Demo Firma Digital - PDF
+                    </td>
+                    @*<td style="padding-top:9px;text-align:right;color:white;font-weight:600;">
+                        <span id="sNameUser">Usuario</span><br />
+                        <span id="sProfileUser">Test</span>
+                    </td>
+                    <td style="font-size:30px;text-align:right">
+                        |
+                    </td>
+                    <td style="width:9%;padding-top:8px;text-align:center;color:white;font-weight:600;cursor:pointer;">
+                        <span id="lblLogOut"> Cerrar Sesión </span>
+                    </td*@
+                </tr>
+            </table>
+        </div>
+    </nav>
+</div>
+<div class="row" style="height:50px;">
+    <div class="col-sm-5" style="padding-top:10px;padding-left:50px">
+        <center style="font-size:20px;font-weight:bolder">
+            @Session["App"]
+        </center>
+    </div>
+    <div class="col-sm-1">
+    </div>
+</div>
+@*@TempData["ErrorLogin"]*@
+
+@Scripts.Render(@Url.Content("~/bundles/jquery"))
+
+<script>
+
+    $("#lblLogOut").click(function () {
+        window.location = '@Url.Action("logOut", "Menu")';
+    });
+
+</script>

@@ -1,0 +1,251 @@
+﻿@using Soriana.DigitalSignature.Web.Helpers
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Soriana | @Session["App"]</title>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700' rel='stylesheet' type='text/css'>
+    <!-- Add local styles, mostly for plugins css file -->
+    @if (IsSectionDefined("Styles"))
+    {@RenderSection("Styles", required: false)}
+
+    <!-- Add jQuery Style direct - used for jQGrid plugin -->
+    <link href="@Url.Content("~/Scripts/plugins/jquery-ui/jquery-ui.css")" rel="stylesheet" type="text/css" />
+
+    <!-- Primary Inspinia style -->
+    <link href="@Url.Content("~/Content/Fonts/font-awesome/css/font-awesome.css")" rel="stylesheet" />
+    @Styles.Render(@Url.Content("~/Content/css"))
+    @Scripts.Render("~/budles/sweetalert")
+</head>
+<body class="top-navigation pace-running pace-running pace-running pace-running">
+    <!-- Wrapper-->
+    <!-- PageClass give you ability to specify custom style for specific view based on action -->
+    <div id="wrapper" class="@Html.PageClass()">
+
+        <!-- Page wraper -->
+        <div id="page-wrapper" class="gray-bg toggled" style="min-height: 667px;">
+            <!-- Top Navbar -->
+            @Html.Partial("_TopNavbar3")
+
+            <!-- Main view  -->
+            @RenderBody()
+
+            <!-- Footer -->
+            @Html.Partial("_Footer")
+
+        </div>
+        <!-- End page wrapper-->
+
+    </div>
+    <!-- End wrapper-->
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @Scripts.Render("~/plugins/slimScroll")
+    @Scripts.Render("~/bundles/inspinia")
+    @Scripts.Render("~/plugins/bootbox")
+    <!-- Skin config script - only for demo purpose-->
+    @Scripts.Render("~/bundles/skinConfig")
+    <!-- Handler for local scripts -->
+    @RenderSection("scripts", required: false)
+
+    <script>
+    $(document).ready(function () {
+        $("#wrapper").toggleClass("toggle");
+    });
+    @*function optionSelected_onkeydown(e) {
+        var valueOption = $("#optionSelected").val();
+
+        if (e.which == 27) {
+
+
+        }
+        else {
+            //enter
+            if (e.which == 13) {
+
+                $.ajax({
+                    cache: false,
+                    type: 'GET',
+                    datatype: 'html',
+                    url: '@Url.Action("RedirectOption", "Menu")',
+                    data: {
+                        option: valueOption,
+                    },
+                    success: function (data) {
+                        debugger;
+                         if (data.Success == true) {
+                            window.location.href = data.datos.url;
+                        } else {
+                            //  bootbox.alert(data.Message);
+                            alert(data.Message);
+                        }
+                    }
+        ,
+                    error: function (jqXHR, textStatus, errorThrown) {
+                        alert(errorThrown);
+                    }
+
+                });
+
+            }
+        }
+    }*@
+
+    function optionSelected_onkeydown(e) {
+        var valueOption = $("#optionSelected").val();
+
+        if (e.which == 27) {
+
+
+        }
+        else {
+            //enter
+            if (e.which == 13) {
+
+                $.ajax({
+                    cache: false,
+                    type: 'GET',
+                    datatype: 'html',
+                    url: '@Url.Action("RedirectOption", "Menu")',
+                    data: {
+                        option: valueOption,
+                    },
+                    success: function (data) {
+                        debugger;
+                        if (data.Success == true) {
+                            window.location.href = data.datos.url;
+                        } else {
+                            //  bootbox.alert(data.Message);
+                            alert(data.Message);
+                        }
+                    }
+        ,
+                    error: function (jqXHR, textStatus, errorThrown) {
+                        alert(errorThrown);
+                    }
+
+                });
+
+            }
+        }
+    }
+    </script>
+    <script language="javascript">
+    function validaPermiosBotones(nombreBoton) {
+        var permiso = false;
+        $.ajax({
+            cache: false,
+            type: 'GET',
+            datatype: 'html',
+            url: '@Url.Action("validaPermiosBotones", "Menu")',
+            data: {
+                nombreBoton: nombreBoton,
+            },
+            success: function (data) {
+                debugger;
+                if (data.Success == false) {
+                    document.getElementById("noAccesModalLogin").innerHTML = data.Message;
+                    $("#noAccesModalLogin").show();
+                }
+                else {
+                    if (data.Message == "OK") {
+                        permiso = true;
+                    }
+                    else if (data.Message == "NO") {
+                        permiso = false;
+                    }
+                    else {
+                        var url = data.urlRedirect;
+                        window.location.href = url;
+                    }
+                }
+
+            }
+        ,
+            error: function (jqXHR, textStatus, errorThrown) {
+                alert(errorThrown);
+            }
+
+        });
+        return permiso;
+    }
+    </script>
+    <script language="javascript">
+    function PermisoAccion() {
+        var usuario = $("#txtUsuarioModal").val();
+        var password = $("#txtPasswordModal").val();
+        var nombreBoton =  document.getElementById("lblBtnAValidar").innerHTML;
+        debugger;
+        var accesoValido = false;
+        $.ajax({
+            cache: false,
+            type: 'GET',
+            datatype: 'html',
+            url: '@Url.Action("PermisoAccion", "Menu")',
+            data: {
+                usuario: usuario,
+                password: password,
+                nombreBoton: nombreBoton
+            },
+            success: function (data) {
+
+                if (data.Success == false) {
+                    document.getElementById("noAccesModalLogin").innerHTML = data.Message;
+                    $("#noAccesModalLogin").show();
+                }
+
+                else {
+                    if (data.Message == "OK") {
+                        //  accesoValido = true;
+                        var codeToExecute = document.getElementById("lblLLamadoOriginalOk").innerHTML;
+                        var tmpFunc = new Function(codeToExecute);
+                        tmpFunc();
+                    }
+                    else if (data.Message == "NO") {
+                        document.getElementById("noAccesModalLogin").innerHTML = "Nivel de usuario no es permitido.";
+                        $("#noAccesModalLogin").show();
+                    }
+                    else {
+                        var url = data.urlRedirect;
+                        window.location.href = url;
+                    }
+                }
+
+            }
+        ,
+            error: function (jqXHR, textStatus, errorThrown) {
+
+                alert(errorThrown);
+            }
+
+        });
+        //return permiso;
+    }
+    </script>
+    @*Mensaje de error view bag / inicio botones*@
+    <script>
+    $(function () {
+        if ("@ViewBag.Error" != null & "@ViewBag.Error" != "") {
+            bootbox.alert("@ViewBag.Error");
+        }
+    });
+    </script>
+    @*SOLO NUMEROES ONKEYPRESS*@
+    <script type="text/javascript">
+        function isNumber(evt) {
+            evt = (evt) ? evt : window.event;
+            var charCode = (evt.which) ? evt.which : evt.keyCode;
+            if ((charCode > 31 && charCode < 48) || charCode > 57) {
+                return false;
+            }
+            return true;
+        }
+
+
+    </script>
+
+</body>
+</html>
